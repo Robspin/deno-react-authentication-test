@@ -11,6 +11,7 @@ class UserClass {
    userCollection = DB.collection('users');
 
    register = async (inputUserDetails: User) => {
+      console.log(inputUserDetails);
       const email = inputUserDetails.email;
       const password = inputUserDetails.password;
       const salt = await bcrypt.genSalt(10);
@@ -25,6 +26,7 @@ class UserClass {
       const user: any = await this.userCollection.findOne({
          email: inputUserDetails.email
       });
+      console.log(inputUserDetails);
       if (!user) {
          console.log('Not a registered user');
          return null;

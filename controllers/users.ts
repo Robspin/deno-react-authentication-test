@@ -46,6 +46,7 @@ export const login = async ({
    const users = requestBody.value;
    const email = users.email;
    const password = users.password;
+   console.log(email, password);
    const login = await UserClass.login({ email: email, password: password });
    if (login === null) {
       console.log('Invalid userinfo entered');
@@ -57,7 +58,7 @@ export const login = async ({
          email: email,
          exp: new Date().getTime() + 6000
       };
-      const header = { alg: 'HS256', typ: 'JWT' };
+      // const header = { alg: 'HS256', typ: 'JWT' };
       const token = await create({ alg: 'HS256', typ: 'JWT' }, payload, key);
       response.status = 200;
       response.body = {
