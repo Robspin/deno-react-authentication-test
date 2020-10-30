@@ -11,7 +11,6 @@ class UserClass {
    userCollection = DB.collection('users');
 
    register = async (inputUserDetails: User) => {
-      console.log(inputUserDetails);
       const email = inputUserDetails.email;
       const password = inputUserDetails.password;
       const salt = await bcrypt.genSalt(10);
@@ -22,11 +21,11 @@ class UserClass {
       });
       return console.log('User has been created');
    };
+
    login = async (inputUserDetails: User) => {
       const user: any = await this.userCollection.findOne({
          email: inputUserDetails.email
       });
-      console.log(inputUserDetails);
       if (!user) {
          console.log('Not a registered user');
          return null;
@@ -39,6 +38,33 @@ class UserClass {
          return user;
       } else {
          return null;
+      }
+   };
+
+   updateUser = async (userId: string, changeData: User) => {
+      const {
+         matchedCount,
+         modifiedCount,
+         upsertedId
+      } = await this.userCollection.updateOne(
+         { _id: { $oid: userId } },
+         { $set: changeData }
+      );
+      if (matchedCount !== 0) {
+         return true;
+      } else {
+         return false;
+      }
+   };
+
+   deleteUser = async (userId: string) => {
+      const isUserDeleted = await this.userCollection.deleteOne({
+         _id: { $oid: userId }
+      });
+      if (isUserDeleted) {
+         return true;
+      } else {
+         return false;
       }
    };
 }
