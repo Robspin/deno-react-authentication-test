@@ -1,5 +1,7 @@
 import { Application } from 'https://deno.land/x/oak/mod.ts';
-import router from './routes/users.ts';
+
+import staticFileMiddleware from './middleware/staticFileMiddleware.ts';
+import userRoutes from './routes/users.ts';
 
 const env = Deno.env.toObject();
 const PORT = env.PORT || 5000;
@@ -12,6 +14,7 @@ app.use(async (ctx, next) => {
    const rt = ctx.response.headers.get('X-Response-Time');
    console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
 });
+
 app.use(async (ctx, next) => {
    const start = Date.now();
    await next();
@@ -19,8 +22,11 @@ app.use(async (ctx, next) => {
    ctx.response.headers.set('X-Response-Time', `${ms}ms`);
 });
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+// Serving static files
+app.use(staticFileMiddleware);
+
+app.use(userRoutes.routes());
+app.use(userRoutes.allowedMethods());
 console.log(
    `Application is listening on port: ${PORT} or open ${HOST}:${PORT}`
 );
