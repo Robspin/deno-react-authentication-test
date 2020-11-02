@@ -7,8 +7,10 @@ const { JWT_KEY } = config({ safe: true });
 
 const UserClass = new User();
 
-export const getUsers = ({ response }: { response: any }) => {
-   response.body = 'All users';
+export const getUsers = async ({ response }: { response: any }) => {
+   const users = await UserClass.getAllUsers();
+   console.log(users);
+   response.body = users;
 };
 
 export const register = async ({
@@ -23,11 +25,23 @@ export const register = async ({
          text: ['application/ld+json']
       }
    });
+
    const users = await requestBody.value;
+   const userName = users.userName;
    const email = users.email;
    const password = users.password;
-   UserClass.register({ email: email, password: password });
-   response.body = 'User has been Created';
+   if (await UserClass.userCollection.findOne({ email: users.email })) {
+      response.status = 500;
+      response.body = 'User already exists!';
+      console.log('User already exists!');
+   } else {
+      UserClass.register({
+         userName: userName,
+         email: email,
+         password: password
+      });
+      response.body = 'User has been Created';
+   }
 };
 
 export const login = async ({
@@ -45,7 +59,10 @@ export const login = async ({
    const users = await requestBody.value;
    const email = users.email;
    const password = users.password;
-   const login = await UserClass.login({ email: email, password: password });
+   const login = await UserClass.login({
+      email: email,
+      password: password
+   });
    if (login === null) {
       console.log('Invalid userinfo entered');
       response.status = 404;
@@ -60,7 +77,7 @@ export const login = async ({
       const token = await create({ alg: 'HS256', typ: 'JWT' }, payload, key);
       response.status = 200;
       response.body = {
-         msg: 'Hello user',
+         msg: `Hello ${login.userName}`,
          email: email,
          token: token
       };

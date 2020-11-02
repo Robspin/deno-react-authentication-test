@@ -2,22 +2,33 @@ import DB from './db.ts';
 import * as bcrypt from 'https://deno.land/x/bcrypt/mod.ts';
 
 interface User {
+   userName?: string;
    email: string;
    password: string;
+   isAdmin?: boolean;
 }
 
 class UserClass {
    constructor() {}
    userCollection = DB.collection('users');
 
+   getAllUsers = async () => {
+      const users = await this.userCollection.find({});
+      return users;
+   };
+
    register = async (inputUserDetails: User) => {
+      const userName = inputUserDetails.userName;
       const email = inputUserDetails.email;
       const password = inputUserDetails.password;
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password, salt);
       const register = await this.userCollection.insertOne({
+         userName: userName,
          email: email,
-         password: hashPassword
+         password: hashPassword,
+         registeredAt: new Date(),
+         isAdmin: false
       });
       return console.log('User has been created');
    };
@@ -30,11 +41,11 @@ class UserClass {
          console.log('Not a registered user');
          return null;
       }
-      const passwordCofirmation = await bcrypt.compare(
+      const passwordConfirmation = await bcrypt.compare(
          inputUserDetails.password,
          user.password
       );
-      if (passwordCofirmation) {
+      if (passwordConfirmation) {
          return user;
       } else {
          return null;
