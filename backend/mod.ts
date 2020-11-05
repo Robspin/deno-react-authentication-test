@@ -1,4 +1,5 @@
 import { Application } from 'https://deno.land/x/oak/mod.ts';
+import { oakCors } from 'https://deno.land/x/cors/mod.ts';
 
 import staticFileMiddleware from './middleware/staticFileMiddleware.ts';
 
@@ -23,6 +24,13 @@ app.use(async (ctx, next) => {
    const ms = Date.now();
    ctx.response.headers.set('X-Response-Time', `${ms}ms`);
 });
+
+// Change in Production
+app.use(
+   oakCors({
+      origin: 'http://localhost:3000'
+   })
+);
 
 app.use(apiRoutes.routes());
 

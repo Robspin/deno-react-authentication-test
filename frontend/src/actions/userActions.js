@@ -39,7 +39,7 @@ export const login = (email, password) => async dispatch => {
       };
 
       const { data } = await axios.post(
-         '/api/user/login',
+         'http://localhost:5000/api/user/login',
          { email, password },
          config
       );

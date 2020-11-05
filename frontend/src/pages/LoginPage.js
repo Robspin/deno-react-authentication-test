@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -28,21 +27,6 @@ const LoginScreen = ({ location, history }) => {
 
    const submitHandler = async e => {
       e.preventDefault();
-
-      // const config = {
-      //    headers: {
-      //       'Content-Type': 'application/json'
-      //    }
-      // };
-
-      // const { data } = await axios.post(
-      //    '/api/user/login',
-      //    { email, password },
-      //    config
-      // );
-
-      // console.log(await data);
-
       dispatch(login(email, password));
    };
 

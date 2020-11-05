@@ -77,7 +77,7 @@ export const login = async ({
       const token = await create({ alg: 'HS256', typ: 'JWT' }, payload, key);
       response.status = 200;
       response.body = {
-         msg: `Hello ${login.userName}`,
+         name: login.userName,
          email: email,
          token: token
       };
