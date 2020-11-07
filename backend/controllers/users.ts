@@ -27,7 +27,7 @@ export const register = async ({
    });
 
    const users = await requestBody.value;
-   const userName = users.userName;
+   const name = users.name;
    const email = users.email;
    const password = users.password;
    if (await UserClass.userCollection.findOne({ email: users.email })) {
@@ -36,11 +36,11 @@ export const register = async ({
       console.log('User already exists!');
    } else {
       UserClass.register({
-         userName: userName,
+         name: name,
          email: email,
          password: password
       });
-      response.body = 'User has been Created';
+      response.body = users;
    }
 };
 
@@ -77,7 +77,7 @@ export const login = async ({
       const token = await create({ alg: 'HS256', typ: 'JWT' }, payload, key);
       response.status = 200;
       response.body = {
-         name: login.userName,
+         name: login.name,
          email: email,
          token: token
       };

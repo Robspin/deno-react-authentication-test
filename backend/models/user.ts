@@ -2,7 +2,7 @@ import DB from './db.ts';
 import * as bcrypt from 'https://deno.land/x/bcrypt/mod.ts';
 
 interface User {
-   userName?: string;
+   name?: string;
    email: string;
    password: string;
    isAdmin?: boolean;
@@ -18,13 +18,14 @@ class UserClass {
    };
 
    register = async (inputUserDetails: User) => {
-      const userName = inputUserDetails.userName;
+      console.log(inputUserDetails);
+      const name = inputUserDetails.name;
       const email = inputUserDetails.email;
       const password = inputUserDetails.password;
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password, salt);
       const register = await this.userCollection.insertOne({
-         userName: userName,
+         name: name,
          email: email,
          password: hashPassword,
          registeredAt: new Date(),
