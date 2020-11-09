@@ -17,6 +17,16 @@ class UserClass {
       return users;
    };
 
+   // Also provides (encrypted) password!!
+   getSingleUser = async (userId: string) => {
+      const user = await this.userCollection.findOne({ _id: { $oid: userId } });
+      if (user) {
+         return user;
+      } else {
+         return false;
+      }
+   };
+
    register = async (inputUserDetails: User) => {
       console.log(inputUserDetails);
       const name = inputUserDetails.name;

@@ -120,12 +120,15 @@ export const getUserDetails = id => async (dispatch, getState) => {
 
       const config = {
          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}`
+            'Content-Type': 'application/json'
+            // Authorization: `Bearer ${userInfo.token}`
          }
       };
 
-      const { data } = await axios.get(`/api/users/${id}`, config);
+      const { data } = await axios.get(
+         `http://localhost:5000/api/user/${userInfo._id}`,
+         config
+      );
 
       dispatch({
          type: USER_DETAILS_SUCCESS,

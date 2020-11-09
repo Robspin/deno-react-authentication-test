@@ -9,7 +9,6 @@ const UserClass = new User();
 
 export const getUsers = async ({ response }: { response: any }) => {
    const users = await UserClass.getAllUsers();
-   console.log(users);
    response.body = users;
 };
 
@@ -77,10 +76,31 @@ export const login = async ({
       const token = await create({ alg: 'HS256', typ: 'JWT' }, payload, key);
       response.status = 200;
       response.body = {
+         _id: login._id.$oid,
          name: login.name,
          email: email,
+         isAdmin: login.isAdmin,
          token: token
       };
+   }
+};
+
+export const getUserById = async ({
+   request,
+   response,
+   params
+}: {
+   request: any;
+   response: any;
+   params: any;
+}) => {
+   const userId = await params.userId;
+   const user = await UserClass.getSingleUser(userId);
+   if (user) {
+      response.body = user;
+   } else {
+      response.status = 404;
+      response.body = 'User not found';
    }
 };
 

@@ -4,6 +4,7 @@ import {
    register,
    login,
    updateUser,
+   getUserById,
    deleteUser
 } from '../controllers/users.ts';
 
@@ -13,6 +14,7 @@ router
    .get('/', getUsers)
    .post('/register', register)
    .post('/login', login)
+   .get('/:userId', getUserById)
    .put('/update/:userId', updateUser)
    .delete('/delete/:userId', deleteUser);
 
