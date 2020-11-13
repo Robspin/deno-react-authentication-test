@@ -104,35 +104,36 @@ export const getUserById = async ({
    }
 };
 
-export const updateUser = async ({
-   request,
-   response,
-   params
-}: {
-   request: any;
-   response: any;
-   params: any;
-}) => {
-   const userId = await params.userId;
-   const requestBody = await request.body({
-      contentTypes: {
-         text: ['application/ld+json']
-      }
-   });
-   const users = await requestBody.value;
-   const updateUser = await UserClass.updateUser(userId, users);
-   if (updateUser === true) {
-      response.status = 200;
-      response.body = {
-         msg: 'User has been updated'
-      };
-   } else {
-      response.status = 404;
-      response.body = {
-         msg: 'User not found'
-      };
-   }
-};
+// // Unsafe to implement like this
+// export const updateUser = async ({
+//    request,
+//    response,
+//    params
+// }: {
+//    request: any;
+//    response: any;
+//    params: any;
+// }) => {
+//    const userId = await params.userId;
+//    const requestBody = await request.body({
+//       contentTypes: {
+//          text: ['application/ld+json']
+//       }
+//    });
+//    const users = await requestBody.value;
+//    const updateUser = await UserClass.updateUser(userId, users);
+//    if (updateUser === true) {
+//       response.status = 200;
+//       response.body = {
+//          msg: 'User has been updated'
+//       };
+//    } else {
+//       response.status = 404;
+//       response.body = {
+//          msg: 'User not found'
+//       };
+//    }
+// };
 
 export const deleteUser = async ({
    request,

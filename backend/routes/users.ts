@@ -3,7 +3,6 @@ import {
    getUsers,
    register,
    login,
-   updateUser,
    getUserById,
    deleteUser
 } from '../controllers/users.ts';
@@ -15,7 +14,7 @@ router
    .post('/register', register)
    .post('/login', login)
    .get('/:userId', getUserById)
-   .put('/update/:userId', updateUser)
    .delete('/delete/:userId', deleteUser);
+// .put('/update/:userId', updateUser)
 
 export default router;

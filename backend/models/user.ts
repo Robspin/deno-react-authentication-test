@@ -63,21 +63,22 @@ class UserClass {
       }
    };
 
-   updateUser = async (userId: string, changeData: User) => {
-      const {
-         matchedCount,
-         modifiedCount,
-         upsertedId
-      } = await this.userCollection.updateOne(
-         { _id: { $oid: userId } },
-         { $set: changeData }
-      );
-      if (matchedCount !== 0) {
-         return true;
-      } else {
-         return false;
-      }
-   };
+   // // Unsafe to implement like this
+   // updateUser = async (userId: string, changeData: User) => {
+   //    const {
+   //       matchedCount,
+   //       modifiedCount,
+   //       upsertedId
+   //    } = await this.userCollection.updateOne(
+   //       { _id: { $oid: userId } },
+   //       { $set: changeData }
+   //    );
+   //    if (matchedCount !== 0) {
+   //       return true;
+   //    } else {
+   //       return false;
+   //    }
+   // };
 
    deleteUser = async (userId: string) => {
       const isUserDeleted = await this.userCollection.deleteOne({
